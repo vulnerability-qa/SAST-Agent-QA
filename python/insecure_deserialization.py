@@ -1,7 +1,7 @@
-import pickle
+import json
 import sys
 
-data = sys.stdin.buffer.read()
+data = sys.stdin.read()
 # CWE-502: deserializing untrusted data with pickle allows arbitrary code execution.
-obj = pickle.loads(data)
+obj = json.loads(data)
 print(obj)
