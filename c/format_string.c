@@ -6,6 +6,6 @@ int main() {
     fgets(buf, sizeof(buf), stdin);
 
     // CWE-134: user input used directly as printf format string.
-    printf(buf);
+    printf("%s", buf);
     return 0;
 }
