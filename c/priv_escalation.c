@@ -3,12 +3,8 @@
 #include <unistd.h>
 
 int main() {
-    char cmd[256];
-    printf("Enter command: ");
-    fgets(cmd, sizeof(cmd), stdin);
-
     // CWE-269: setuid binary executes user-controlled command with elevated privileges.
     setuid(0);
-    system(cmd);
+    // TODO: Implement specific privileged operation using safe APIs (e.g., execl with fixed args)
     return 0;
 }
