@@ -16,7 +16,7 @@ func main() {
 	fmt.Scan(&username)
 
 	// CWE-89: user input concatenated directly into SQL query.
-	rows, _ := db.Query("SELECT * FROM users WHERE name = '" + username + "'")
+	rows, _ := db.Query("SELECT * FROM users WHERE name = ?", username)
 	defer rows.Close()
 	for rows.Next() {
 		var name, password string
