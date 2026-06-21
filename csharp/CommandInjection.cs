@@ -7,11 +7,25 @@ namespace SastSamples
     {
         public static void Main()
         {
-            Console.Write("Enter command: ");
+            Console.Write("Enter command (list/date/help): ");
             var cmd = Console.ReadLine();
 
-            // CWE-78: user input passed to shell without sanitization.
-            Process.Start(new ProcessStartInfo("/bin/sh", $"-c {cmd}") { UseShellExecute = false });
+            // Map user input to safe, predefined commands
+            switch (cmd?.ToLower())
+            {
+                case "list":
+                    Process.Start(new ProcessStartInfo("/bin/ls", "-l /tmp") { UseShellExecute = false });
+                    break;
+                case "date":
+                    Process.Start(new ProcessStartInfo("/bin/date") { UseShellExecute = false });
+                    break;
+                case "help":
+                    Console.WriteLine("Allowed commands: list, date, help");
+                    break;
+                default:
+                    Console.WriteLine("Invalid command. Type 'help' for allowed commands.");
+                    break;
+            }
         }
     }
 }
