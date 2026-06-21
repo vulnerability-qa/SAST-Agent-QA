@@ -1,5 +1,6 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Scanner;
@@ -15,8 +16,9 @@ public class SqlInjection {
         String username = sc.nextLine();
 
         // CWE-89: user input concatenated directly into SQL query.
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE name = '" + username + "'");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE name = ?");
+        stmt.setString(1, username);
+        ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             System.out.println(rs.getString(1));
         }
