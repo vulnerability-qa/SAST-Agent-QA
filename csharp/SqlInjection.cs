@@ -13,7 +13,9 @@ namespace SastSamples
             // CWE-89: user input concatenated directly into SQL query.
             using var conn = new SqlConnection("Server=localhost;Database=app;Trusted_Connection=True;");
             conn.Open();
-            using var cmd = new SqlCommand($"SELECT * FROM users WHERE name = '{username}'", conn);
+            using var cmd = new SqlCommand("SELECT * FROM users WHERE name = @Name", conn);
+            cmd.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar);
+            cmd.Parameters["@Name"].Value = username;
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
                 Console.WriteLine(reader[0]);
