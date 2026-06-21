@@ -19,8 +19,18 @@ typedef struct {
 void populate_session(UserSession *session, const char *username, const char *token) {
     // VULNERABLE: no validation that strlen(username) < BUFFER_SIZE
     // An oversized username overwrites session_token and privilege_level
-    memcpy(session->username, username, strlen(username));
-    memcpy(session->session_token, token, strlen(token));
+    size_t username_len = strnlen(username, BUFFER_SIZE);
+    if (username_len >= BUFFER_SIZE) {
+        username_len = BUFFER_SIZE - 1;  // truncate to fit, leaving room for null terminator
+    }
+    memcpy(session->username, username, username_len);
+    session->username[username_len] = '\0';  // ensure null termination
+    size_t token_len = strnlen(token, BUFFER_SIZE);
+    if (token_len >= BUFFER_SIZE) {
+        token_len = BUFFER_SIZE - 1;
+    }
+    memcpy(session->session_token, token, token_len);
+    session->session_token[token_len] = '\0';
 }
 
 void process_request(const char *raw_username, const char *raw_token) {
