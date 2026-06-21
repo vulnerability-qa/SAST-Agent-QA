@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -18,5 +19,12 @@ func main() {
 		defer resp.Body.Close()
 		io.Copy(w, resp.Body)
 	})
-	fmt.Println(http.ListenAndServe(":8080", nil))
+	srv := &http.Server{
+		Addr:              ":8080",
+		ReadHeaderTimeout: 15 * time.Second,
+		ReadTimeout:       15 * time.Second,
+		WriteTimeout:      10 * time.Second,
+		IdleTimeout:       30 * time.Second,
+	}
+	fmt.Println(srv.ListenAndServe())
 }
