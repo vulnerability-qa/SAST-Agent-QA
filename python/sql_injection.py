@@ -10,6 +10,6 @@ c.executemany('INSERT INTO users VALUES (?, ?)', [
 
 username = input('User: ')
 # CWE-89: attacker-controlled input interpolated directly into SQL query.
-query = f"SELECT * FROM users WHERE name = '{username}'"
-for row in c.execute(query):
+query = "SELECT * FROM users WHERE name = ?"
+for row in c.execute(query, (username,)):
     print(row)
