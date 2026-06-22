@@ -12,6 +12,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.w3c.dom.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import javax.xml.XMLConstants;
 
 public class XxeProcessingPipeline {
 
@@ -24,12 +25,19 @@ public class XxeProcessingPipeline {
     // Stage 2: applies an XSLT transform using a separate, permissive factory
     private static String applyTransform(String xml, String xslt) throws Exception {
         TransformerFactory tf = TransformerFactory.newInstance();
+        tf.setAttribute(javax.xml.XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        tf.setAttribute(javax.xml.XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
         // VULNERABLE: external entities NOT disabled on this factory
         Transformer transformer = tf.newTransformer(
             new StreamSource(new StringReader(xslt))
         );
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+        dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        dbf.setXIncludeAware(false);
+        dbf.setExpandEntityReferences(false);
         // VULNERABLE: dbf does not set FEATURE_SECURE_PROCESSING or disallow DOCTYPE
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
