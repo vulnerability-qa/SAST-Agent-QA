@@ -9,7 +9,7 @@ namespace SastSamples
         {
             var name = Request.QueryString["name"];
             // CWE-79: user input written to response without HTML encoding.
-            Response.Write("<h1>Hello, " + name + "!</h1>");
+            Response.Write("<h1>Hello, " + HttpUtility.HtmlEncode(name) + "!</h1>");
         }
     }
 }
