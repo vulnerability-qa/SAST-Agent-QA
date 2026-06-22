@@ -4,6 +4,7 @@
 # A naive fix of the sink misses that the value originated from user input.
 
 import sqlite3
+import json
 
 conn = sqlite3.connect('app.db')
 
@@ -13,7 +14,7 @@ def create_report_template(user_id: str, report_name: str, filters: dict):
     # Correctly parameterized — looks safe at first glance
     cursor.execute(
         "INSERT INTO report_templates (user_id, name, filters) VALUES (?, ?, ?)",
-        (user_id, report_name, str(filters))
+        (user_id, report_name, json.dumps(filters))
     )
     conn.commit()
 
@@ -25,7 +26,7 @@ def get_report_template(user_id: str, report_name: str) -> dict:
         (user_id, report_name)
     )
     row = cursor.fetchone()
-    return {'name': row[0], 'filters': eval(row[1])} if row else {}
+    return {'name': row[0], 'filters': json.loads(row[1])} if row else {}
 
 def run_report(user_id: str, report_name: str) -> list:
     """
