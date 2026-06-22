@@ -12,6 +12,7 @@ public class PossibleXSS extends HttpServlet {
         if (name == null) {
             name = "";
         }
+        name = name.replaceAll("[\\r\\n]", "");
         res.setContentType("text/html");
         PrintWriter out = res.getWriter();
         // CWE-79: user input written to response without HTML encoding.
