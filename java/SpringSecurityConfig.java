@@ -9,8 +9,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // CWE-352: CSRF protection explicitly disabled.
-        http.csrf().disable()
-            .authorizeRequests()
+        http.authorizeRequests()
             .anyRequest().permitAll();
     }
 }
