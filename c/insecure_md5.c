@@ -9,7 +9,7 @@ int main() {
 
     unsigned char digest[MD5_DIGEST_LENGTH];
     // CWE-327: MD5 is cryptographically broken.
-    MD5((unsigned char *)password, strlen(password), digest);
+    MD5((unsigned char *)password, strnlen(password, sizeof(password)), digest);
 
     printf("MD5: ");
     for (int i = 0; i < MD5_DIGEST_LENGTH; i++)
