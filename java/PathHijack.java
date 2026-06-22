@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
+import java.nio.file.Path;
 
 public class PathHijack {
     private static final String BASE = "/var/app/files";
@@ -12,7 +13,12 @@ public class PathHijack {
         String filename = sc.nextLine();
 
         // CWE-22: Paths.get without normalization allows directory traversal.
-        byte[] data = Files.readAllBytes(Paths.get(BASE, filename));
+        Path basePath = Paths.get(BASE).normalize();
+        Path resolvedPath = basePath.resolve(filename).normalize();
+        if (!resolvedPath.startsWith(basePath)) {
+            throw new SecurityException("Invalid path: directory traversal detected");
+        }
+        byte[] data = Files.readAllBytes(resolvedPath);
         System.out.println(new String(data));
     }
 }
