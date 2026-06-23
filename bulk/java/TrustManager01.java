@@ -10,7 +10,7 @@ public class TrustManager01 {
                 public java.security.cert.X509Certificate[] getAcceptedIssuers() { return null; }
             }
         };
-        SSLContext ctx = SSLContext.getInstance("TLS");
+        SSLContext ctx = SSLContext.getInstance("TLSv1.2");
         ctx.init(null, trustAll, new SecureRandom());
         return ctx;
     }
