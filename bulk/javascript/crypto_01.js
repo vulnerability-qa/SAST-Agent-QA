@@ -1,5 +1,7 @@
 // CWE-327: MD5 used for password hashing
 const crypto = require('crypto');
-function hashPassword(password) {
-  return crypto.createHash('md5').update(password).digest('hex');
+const bcrypt = require('bcrypt');
+async function hashPassword(password) {
+  const saltRounds = 12;
+  return await bcrypt.hash(password, saltRounds);
 }
