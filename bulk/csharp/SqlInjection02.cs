@@ -2,7 +2,9 @@
 using System.Data.SqlClient;
 public class SqlInjection02 {
     public object Search(SqlConnection conn, string term) {
-        var cmd = new SqlCommand($"SELECT * FROM Products WHERE Name LIKE '%{term}%'", conn);
+        var cmd = new SqlCommand("SELECT * FROM Products WHERE Name LIKE @term", conn);
+        cmd.Parameters.Add("@term", System.Data.SqlDbType.NVarChar);
+        cmd.Parameters["@term"].Value = "%" + term + "%";
         return cmd.ExecuteReader();
     }
 }
