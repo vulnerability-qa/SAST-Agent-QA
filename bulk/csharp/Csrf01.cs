@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 public class TransferController : Controller {
     [HttpPost]
-    // Missing: [ValidateAntiForgeryToken]
+    [ValidateAntiForgeryToken]
     public IActionResult Transfer(string to, decimal amount) {
         ProcessTransfer(to, amount);
         return Ok();
