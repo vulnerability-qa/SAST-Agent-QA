@@ -1,6 +1,11 @@
 // CWE-22: Path Traversal in file write
 package main
-import "os"
+import (
+	"os"
+	"path/filepath"
+)
 func saveUpload(filename string, data []byte) error {
-	return os.WriteFile("/var/www/uploads/"+filename, data, 0644)
+	sanitized := filepath.Base(filename)
+	fullPath := filepath.Join("/var/www/uploads", sanitized)
+	return os.WriteFile(fullPath, data, 0600)
 }
