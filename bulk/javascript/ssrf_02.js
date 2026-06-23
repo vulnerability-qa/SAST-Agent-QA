@@ -3,5 +3,6 @@ const fetch = require('node-fetch');
 async function proxy(req, res) {
   const target = req.query.url;
   const data = await fetch(target).then(r => r.text());
+  res.setHeader('Content-Type', 'text/plain');
   res.send(data);
 }
