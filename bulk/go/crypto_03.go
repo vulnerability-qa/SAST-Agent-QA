@@ -1,9 +1,14 @@
 // CWE-330: math/rand used for security token
 package main
 import (
+	"crypto/rand"
 	"fmt"
-	"math/rand"
 )
 func generateToken() string {
-	return fmt.Sprintf("%016x", rand.Int63()) // not cryptographically secure
+	b := make([]byte, 8)
+	_, err := rand.Read(b)
+	if err != nil {
+		panic(err)
+	}
+	return fmt.Sprintf("%016x", b)
 }
