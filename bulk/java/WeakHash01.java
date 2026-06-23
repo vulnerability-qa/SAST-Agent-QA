@@ -1,8 +1,9 @@
 // CWE-916: Weak password hashing without salt
-import java.security.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class WeakHash01 {
-    public String hash(String pwd) throws Exception {
-        return new String(MessageDigest.getInstance("SHA-1").digest(pwd.getBytes()));
+    public String hash(String pwd) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(pwd);
         // No salt — vulnerable to rainbow table attacks
     }
 }
