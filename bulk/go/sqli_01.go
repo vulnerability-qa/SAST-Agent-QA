@@ -5,6 +5,6 @@ import (
 	"fmt"
 )
 func getUser(db *sql.DB, username string) (*sql.Rows, error) {
-	query := fmt.Sprintf("SELECT * FROM users WHERE username = '%s'", username)
-	return db.Query(query)
+	query := "SELECT * FROM users WHERE username = ?"
+	return db.Query(query, username)
 }
