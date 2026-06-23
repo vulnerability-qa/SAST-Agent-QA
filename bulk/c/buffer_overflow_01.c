@@ -2,6 +2,6 @@
 #include <stdio.h>
 void read_input(void) {
     char buf[64];
-    gets(buf); /* gets() does not limit input length */
+    fgets(buf, sizeof(buf), stdin); /* gets() does not limit input length */
     printf("Input: %s\n", buf);
 }
