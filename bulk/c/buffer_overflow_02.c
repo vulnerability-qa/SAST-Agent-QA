@@ -2,5 +2,6 @@
 #include <string.h>
 void copy_name(char *name) {
     char buf[32];
-    strcpy(buf, name); /* no length check */
+    strncpy(buf, name, sizeof(buf) - 1);
+    buf[sizeof(buf) - 1] = '\0';
 }
