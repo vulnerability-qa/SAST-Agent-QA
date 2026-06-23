@@ -6,5 +6,5 @@ import (
 )
 func writeTmp(data []byte) (*os.File, error) {
 	path := fmt.Sprintf("/tmp/upload_%d", os.Getpid())
-	return os.OpenFile(path, os.O_CREATE|os.O_WRONLY, 0644)
+	return os.OpenFile(path, os.O_CREATE|os.O_WRONLY, 0600)
 }
