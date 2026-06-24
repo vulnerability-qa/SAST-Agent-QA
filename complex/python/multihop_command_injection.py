@@ -40,10 +40,14 @@ def run_diagnostic(raw_input: str) -> str:
     step2 = extract_config_value(step1)   # base64 + INI parse
     step3 = sanitize_command(step2)       # strip obvious metacharacters
 
+    # Allowlist: only permit valid hostnames/IPs
+    if not re.match(r'^[a-zA-Z0-9.\-:]+$', step3):
+        return 'Invalid input: only alphanumeric, dots, hyphens, and colons allowed'
+
     # VULNERABLE: step3 may still contain $() or `backtick` subshells
     result = subprocess.run(
-        f'ping -c 1 {step3}',
-        shell=True, capture_output=True, text=True
+        ['ping', '-c', '1', step3],
+        shell=False, capture_output=True, text=True
     )
     return result.stdout
 
