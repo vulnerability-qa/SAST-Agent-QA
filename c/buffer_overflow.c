@@ -4,8 +4,7 @@
 void process_input(char *input) {
     char buf[64];
     // CWE-120: strcpy does not check destination buffer size — stack buffer overflow.
-    strncpy(buf, input, sizeof(buf) - 1);
-    buf[sizeof(buf) - 1] = '\0';
+    snprintf(buf, sizeof(buf), "%s", input);
     printf("Processed: %s\n", buf);
 }
 
