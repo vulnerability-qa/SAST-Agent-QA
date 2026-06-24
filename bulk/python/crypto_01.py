@@ -1,4 +1,6 @@
 # CWE-327: Use of broken MD5 for password hashing
 import hashlib
+from argon2 import PasswordHasher
 def hash_password(password):
-    return hashlib.md5(password.encode()).hexdigest()
+    ph = PasswordHasher()
+    return ph.hash(password)
