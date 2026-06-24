@@ -1,4 +1,5 @@
 # CWE-78: Command Injection via os.system
 import os
+import subprocess
 def ping_host(host):
-    os.system('ping -c 1 ' + host)
+    subprocess.run(['ping', '-c', '1', host])
