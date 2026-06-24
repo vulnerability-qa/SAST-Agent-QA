@@ -21,11 +21,17 @@ void populate_session(UserSession *session, const char *username, const char *to
     // An oversized username overwrites session_token and privilege_level
     size_t username_len = strlen(username);
     size_t copy_len = (username_len < BUFFER_SIZE) ? username_len : (BUFFER_SIZE - 1);
-    memcpy(session->username, username, copy_len);
+    if (memcpy_s(session->username, BUFFER_SIZE, username, copy_len) != 0) {
+        session->username[0] = '\0';
+        return;
+    }
     session->username[copy_len] = '\0';
     size_t token_len = strlen(token);
     size_t token_copy_len = (token_len < BUFFER_SIZE) ? token_len : (BUFFER_SIZE - 1);
-    memcpy(session->session_token, token, token_copy_len);
+    if (memcpy_s(session->session_token, BUFFER_SIZE, token, token_copy_len) != 0) {
+        session->session_token[0] = '\0';
+        return;
+    }
     session->session_token[token_copy_len] = '\0';
 }
 
