@@ -8,7 +8,10 @@ app.get('/fetch', (req, res) => {
   http.get(url, (response) => {
     let data = '';
     response.on('data', chunk => data += chunk);
-    response.on('end', () => res.send(data));
+    response.on('end', () => {
+      res.setHeader('Content-Type', 'text/plain');
+      res.send(data);
+    });
   });
 });
 
