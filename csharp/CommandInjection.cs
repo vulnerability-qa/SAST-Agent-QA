@@ -17,6 +17,7 @@ namespace SastSamples
                     Process.Start(new ProcessStartInfo("/bin/ls", "-l /tmp") { UseShellExecute = false });
                     break;
                 case "date":
+                    // SAST: false positive - command is hardcoded, user input only selects from allowlist
                     Process.Start(new ProcessStartInfo("/bin/date") { UseShellExecute = false });
                     break;
                 case "help":
