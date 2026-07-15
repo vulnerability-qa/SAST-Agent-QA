@@ -5,6 +5,10 @@ namespace SastSamples
 {
     public static class CommandInjection
     {
+        private static void ExecuteListCommand() { Process.Start(new ProcessStartInfo("/bin/ls", "-l /tmp") { UseShellExecute = false }); }
+        private static void ExecuteDateCommand() { Process.Start(new ProcessStartInfo("/bin/date") { UseShellExecute = false }); }
+        private static void ShowHelp() { Console.WriteLine("Allowed commands: list, date, help"); }
+
         public static void Main()
         {
             Console.Write("Enter command (list/date/help): ");
@@ -14,13 +18,13 @@ namespace SastSamples
             switch (cmd?.ToLower())
             {
                 case "list":
-                    Process.Start(new ProcessStartInfo("/bin/ls", "-l /tmp") { UseShellExecute = false });
+                    ExecuteListCommand();
                     break;
                 case "date":
-                    Process.Start(new ProcessStartInfo("/bin/date") { UseShellExecute = false });
+                    ExecuteDateCommand();
                     break;
                 case "help":
-                    Console.WriteLine("Allowed commands: list, date, help");
+                    ShowHelp();
                     break;
                 default:
                     Console.WriteLine("Invalid command. Type 'help' for allowed commands.");
